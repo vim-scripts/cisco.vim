@@ -1,11 +1,11 @@
 " Notes {{{
 " Vim syntax file
 " Language: cisco configuration files
-" Version: .621
+" Version: .622
 " 
 " Inception: 29-jan-2006
 " Inspiration:  Harry Schroeder's original cisco vim syntax file, and a discussion
-"               on reddit.vom in the vim subreddit on highlighting ip addresses in
+"               on reddit.com in the vim subreddit on highlighting ip addresses in
 "               a syntax file in 2005.  Grown from there.
 " Notes:    
 "           This does not follow the conventional notion in vim of separate
@@ -17,18 +17,25 @@
 "           form.  Configuration lines do not express logic, but rather
 "           command parameters.  The chief structure are subcommands, and
 "           depending on the command chosen, there are a variable number of
-"           nested subcommand mixed with parameters.
+"           nested subcommand mixed with parameters.  Also, I wanted to
+"           underline major mode commands like "interface" and underlining
+"           isn't really available in all the syntax mode.  Pandoc does it,
+"           but depending on the color scheme it's not always there and in
+"           general it's confusing to highlight a command or subcomand using
+"           lexical tags meant for programming languages.  What's really
+"           needed are lexical tags for the cisco command structure.
 "
 "           Defining switchport configurations, for example, will have a
 "           different form depending on whether one is configuring a Dot1q
 "           trunk or access port, and if an access port, whether or not a
-"           private vlan is to be used.  Also, in cisco configurations, there
-"           is only really one major class of syntax elements to be
-"           highlighted, keywords, and so highlighting everything misses the
-"           chief advantage highlighting confers which is to make it easier to
-"           visually separate elements in text i.e. parameters and keywords
-"           and other command elements.  So varied colors are used for
-"           subcommands and their nested elements.
+"           private vlan is to be used.  Also, in cisco configurations,
+"           there is only really one major class of syntax elements to be
+"           highlighted, keywords, and so highlighting everything the same way
+"           loses the chief advantage highlighting confers which is to make it
+"           easier to visually separate elements in text i.e. parameters and
+"           keywords and other command elements.  So varied colors are used
+"           for subcommands and their nested elements to make it easier to
+"           visually parse things.
 "
 "           So rather than define new two files, one for colors of highlighted
 "           elements and one for determing which configuration words are
@@ -63,6 +70,13 @@
 "           not as good in others.  In essence, about all switching color
 "           schemes will do is change the background color and the color of
 "           the default text.
+"
+"           A quick note about versioning.  Currently, three digits are used
+"           past the decimal point, i.e. .621 where .622 indicates minor
+"           tweaks to highlighting in the third digit.  Whereas .63 would
+"           indicate a new subcommand.  This is not a particularily good
+"           versioning system right now, so this will likely change in the
+"           near future.
 "
 " }}}
 " Setup {{{
@@ -656,7 +670,7 @@ syn region vrf_region start="vrf context" start="vrf forwarding" start="vrf memb
 " TODO  make these local to each subgroup, even at the expense of defining
 "       the same pattern with different names
 syn match switchport_kw_err "\v[^ ]+" contained
-exe s:h . "switchport_kw_err" . s:fgred
+exe s:h . "switchport_kw_err" . s:rev . s:fgred
 
 syn match encapsulation_tag /\v[0-9]{1,4}/ contained
 syn match encapsulation_tag /ethertype/ contained
@@ -1114,4 +1128,3 @@ syn region config_prompt_reg excludenl keepend start=/^[a-zA-Z0-9]\{-1,63}([a-zA
 "}}}
 
 let b:current_syntax = "cisco"
-
